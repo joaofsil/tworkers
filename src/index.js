@@ -10,6 +10,8 @@
 
 export default {
 	async fetch(request, env, ctx) {
-		return new Response('Hello Workers!');
+		return new Response('Hello Workers! <BR />' +
+		'<a href="https://tworkers.joao-sil.workers.dev/api">API call</a> <BR />'
+		);
 	},
 };
