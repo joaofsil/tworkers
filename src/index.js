@@ -11,7 +11,7 @@
 export default {
 	async fetch(request, env, ctx) {
 		return new Response('{"response": "<html><body>Hello Workers! <BR />' +
-		'<a href=\"https://tworkers.joao-sil.workers.dev/api\">API call</a> <BR />' +
+		'<a href=\'https://tworkers.joao-sil.workers.dev/api\'>API call</a> <BR />' +
 		'</body></html>"}'
 		, { headers: new Headers({
 			"Content-Type": "application/json; charset=utf-8", 
