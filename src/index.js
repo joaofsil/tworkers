@@ -15,7 +15,7 @@ export default {
 		'</body></html>'
 		, { headers: new Headers({
 			"Content-Type": "text/html; charset=utf-8", 
-			"Access-Control-Allow-Origin", "*"
+			"Access-Control-Allow-Origin": "*"
 			})
 		});
 	},
