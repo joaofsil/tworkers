@@ -1,8 +1,12 @@
 <html>
 	<head>
 		<script language="javascript">
-			function clicked() {
+			async function clicked() {
 				alert('clicked');
+				const url = 'https://tworkers.joao-sil.workers.dev/';
+				const response = await fetch(url);
+				const result = await response.json();
+				alert('Worker says' + result):
 			}
 		</script>
 	</head>
