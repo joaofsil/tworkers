@@ -10,8 +10,9 @@
 
 export default {
 	async fetch(request, env, ctx) {
-		return new Response('Hello Workers! <BR />' +
-		'<a href="https://tworkers.joao-sil.workers.dev/api">API call</a> <BR />'
-		);
+		return new Response('<html><body>Hello Workers! <BR />' +
+		'<a href="https://tworkers.joao-sil.workers.dev/api">API call</a> <BR />' +
+		'</body></html>'
+		, {Content-Type: "text/html; charset=utf-8"});
 	},
 };
