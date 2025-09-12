@@ -13,6 +13,10 @@ export default {
 		return new Response('<html><body>Hello Workers! <BR />' +
 		'<a href="https://tworkers.joao-sil.workers.dev/api">API call</a> <BR />' +
 		'</body></html>'
-		, {"Content-Type": "text/html; charset=utf-8", "Access-Control-Allow-Origin", "*"});
+		, headers: new Headers({
+			"Content-Type": "text/html; charset=utf-8", 
+			"Access-Control-Allow-Origin", "*"
+			})
+		);
 	},
 };
