@@ -5,8 +5,8 @@
 				alert('clicked');
 				const url = 'https://tworkers.joao-sil.workers.dev/';
 				const response = await fetch(url);
-				const result = await response.json().stringify();
-				alert('Worker says' + result);
+				const result = await response.json();
+				alert('Worker says' + result.response);
 			}
 		</script>
 	</head>
