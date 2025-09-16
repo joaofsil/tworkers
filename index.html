@@ -1,17 +1,203 @@
-<html>
-	<head>
-		<script language="javascript">
-			async function clicked() {
-				alert('clicked');
-				const url = 'https://tworkers.joao-sil.workers.dev/';
-				const response = await fetch(url);
-				const result = await response.json();
-				alert('Worker says' + result.response);
-			}
-		</script>
-	</head>
-	<body>
-		Hello Workers and Pages! <br />
-		<a href="javascript:clicked();">Link to the worker</a>
-	</body>
-</html>"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #DB4437;
+            --google-green: #0F9D58;
+            --google-yellow: #F4B400;
+            --light-grey: #f5f5f5;
+            --medium-grey: #757575;
+            --dark-grey: #333;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-grey);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Allow content to grow */
+            margin: 0;
+            padding: 40px 20px; /* Add padding for scrolling */
+            box-sizing: border-box;
+            color: var(--dark-grey);
+        }
+
+        .welcome-container {
+            text-align: center;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 750px; /* Constrain width for larger screens */
+        }
+
+        /* Removed container hover effect as it grows larger */
+
+        h1 {
+            color: var(--google-blue);
+            font-size: 4em;
+            font-weight: 700;
+            margin: 0 0 10px;
+        }
+
+        .option-group {
+            margin-top: 40px;
+        }
+
+        .option-group > p, .welcome-container > p {
+            color: var(--medium-grey);
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+        }
+
+        .option-button {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 8px;
+            /* Default background for new buttons */
+            background-color: var(--google-blue);
+            color: white;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            min-width: 120px;
+            text-transform: uppercase;
+        }
+
+        .option-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .option-button.selected {
+            outline: 4px solid var(--google-yellow);
+            background-color: var(--google-green);
+            outline-offset: 2px;
+        }
+
+        .fly {
+            background-color: var(--google-blue);
+        }
+
+        .train {
+            background-color: var(--google-red);
+        }
+
+        .car {
+            background-color: var(--google-green);
+        }
+
+        .submit_plane {
+            font-size: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-container">
+        <h1>Hello</h1>
+
+        <div class="option-group">
+            <p>Tell me about the duration of your escape</p>
+            <div class="options" data-group="duration">
+                <button class="option-button" data-value="Weekend">Weekend</button>
+                <button class="option-button" data-value="One week">One week</button>
+            </div>
+        </div>
+
+        <div class="option-group">
+            <p>What kind of escape are you looking for?</p>
+            <div class="options" data-group="escapeType">
+                <button class="option-button" data-value="Mountains">Mountains</button>
+                <button class="option-button" data-value="Beach">Beach</button>
+                <button class="option-button" data-value="City Escape">City Escape</button>
+            </div>
+        </div>
+
+        <div class="option-group">
+            <p>What kind of accommodation do you want to experience?</p>
+            <div class="options" data-group="accommodation">
+                <button class="option-button" data-value="Hotel">Hotel</button>
+                <button class="option-button" data-value="BnB">BnB</button>
+                <button class="option-button" data-value="Camping">Camping</button>
+            </div>
+        </div>
+
+        <div class="option-group">
+            <a href="javascript:submitForm();"><label class="submit_plane">&#x1F6EB;</label></a>
+        </div>
+    </div>
+
+    <div class="welcome-container">
+        <div id=response>
+        Here you will see the suggestion for your escape.
+        </div>
+    </div>
+
+
+
+    <script>
+        const userSelections = {
+            duration:      "no preference",
+            escapeType:    "no preference",
+            accommodation: "no preference",
+        };
+
+        const optionButtons = document.querySelectorAll('.option-button');
+
+        optionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const group = button.parentElement.dataset.group;
+                const value = button.dataset.value;
+
+                // Update selections object
+                userSelections[group] = value;
+
+                // Update visual selection for the group
+                const groupButtons = document.querySelectorAll(`.options[data-group="${group}"] .option-button`);
+                groupButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+
+                // Log the current selections to the console
+                console.log('Current Selections:', userSelections);
+            });
+        });
+
+        function submitForm() {
+				//alert('About to submit');				
+				const worker_url = "https://tworkers.joao-sil.workers.dev/api/travel_plan";
+				const params     = new URLSearchParams();
+				params.append("duration",      userSelections.duration);
+				params.append("kind",          userSelections.escapeType);
+				params.append("accommodation", userSelections.accommodation);
+				
+				const url = worker_url + '?' + params;
+				//alert('url to fetch is ' + url);
+				const res      = await fetch(url);
+				const response = await res.json();
+				const message  = response.response;
+
+				const div_plan = document.getElementById("response");
+				div_plan.innerText = message;
+        }
+    </script>
+
+</body>
+</html>
