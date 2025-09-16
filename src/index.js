@@ -59,11 +59,11 @@ export default {
 		}
 
 		if (url.pathname === '/') {
-			return new Response('API Server is running. Try making a request to /api/travel_plan', { headers: res_headers });
+			return new Response({message: 'API Server is running. Try making a request to /api/travel_plan'}, { headers: res_headers });
 		}
 
 		res_headers.append("status", 404);
-		return new Response('Not Found', { headers: res_headers });
+		return new Response({message: 'Not Found'}, { headers: res_headers });
 	},
 };
 
