@@ -35,17 +35,22 @@ function handleTravelPlanRequest(request) {
 export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
+        const res_headers = new Headers({
+            "Content-Type": "application/json; charset=utf-8",
+            "Access-Control-Allow-Origin": "*"
+        });
 
         // Basic routing
         if (url.pathname === '/api/travel_plan' && request.method === 'GET') {
-            return handleTravelPlanRequest(request);
+            return handleTravelPlanRequest(request, res_headers);
         }
 
         if (url.pathname === '/') {
-            return new Response('API Server is running. Try making a request to /api/travel_plan');
+            return new Response('API Server is running. Try making a request to /api/travel_plan', res_headers);
         }
 
-        return new Response('Not Found', { status: 404 });
+        res_headers.append("status", 404);
+        return new Response('Not Found', res_headers);
     },
 };
 
