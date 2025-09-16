@@ -30,7 +30,7 @@ function handleTravelPlanRequest(request) {
 
 	// Basic validation to ensure all required parameters are present
 	if (!duration || !escapeType || !accommodation) {
-		return jsonResponse( { error: 'Missing required parameters. Please provide duration, escapeType, and accommodation.' }, { "status": 404 });
+		return jsonResponse( { message: 'Missing required parameters. Please provide duration, escapeType, and accommodation.' }, { "status": 404 });
 	}
 
 	// The parameters are available here to generate a dynamic itinerary if needed

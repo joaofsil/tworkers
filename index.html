@@ -185,14 +185,15 @@
 				const worker_url = "https://tworkers.joao-sil.workers.dev/api/travel_plan";
 				const params     = new URLSearchParams();
 				params.append("duration",      userSelections.duration);
-				params.append("kind",          userSelections.escapeType);
+				params.append("escapeType",    userSelections.escapeType);
 				params.append("accommodation", userSelections.accommodation);
 				
 				const url = worker_url + '?' + params;
 				//alert('url to fetch is ' + url);
 				const res      = await fetch(url);
 				const response = await res.json();
-				const message  = response.response;
+				const message  = response.message;
+				console.log(message);
 
 				const div_plan = document.getElementById("response");
 				div_plan.innerText = message;
