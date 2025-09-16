@@ -52,15 +52,15 @@ export default {
 
 		// Basic routing
 		if (url.pathname === '/api/travel_plan' && request.method === 'GET') {
-			return handleTravelPlanRequest(request, res_headers);
+			return handleTravelPlanRequest(request, {headers: res_headers});
 		}
 
 		if (url.pathname === '/') {
-			return new Response('API Server is running. Try making a request to /api/travel_plan', res_headers);
+			return new Response('API Server is running. Try making a request to /api/travel_plan', { headers: res_headers });
 		}
 
 		res_headers.append("status", 404);
-		return new Response('Not Found', res_headers);
+		return new Response('Not Found', { headers: res_headers });
 	},
 };
 
