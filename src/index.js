@@ -10,7 +10,7 @@
 
 // Helper function to create a JSON response.
 const jsonResponse = (data, options = {}) => {
-	const headers = { 'Content-Type': 'application/json', ...options.headers };
+	const headers = { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*", ...options.headers };
 	return new Response(JSON.stringify(data), { ...options, headers });
 };
 
@@ -22,9 +22,6 @@ const jsonResponse = (data, options = {}) => {
 function handleTravelPlanRequest(request) {
 	const url = new URL(request.url);
 	const { searchParams } = url;
-	let res_headers = new Headers();
-	res_headers.append("Content-Type", "application/json; charset=utf-8");
-	res_headers.append("Access-Control-Allow-Origin", "*");
 
 	// Get the parameters from the query string
 	const duration = searchParams.get('duration');
@@ -33,8 +30,7 @@ function handleTravelPlanRequest(request) {
 
 	// Basic validation to ensure all required parameters are present
 	if (!duration || !escapeType || !accommodation) {
-		res_headers.append("status", 404);
-		return jsonResponse({ error: 'Missing required parameters. Please provide duration, escapeType, and accommodation.' }, { headers: res_headers });
+		return jsonResponse( { error: 'Missing required parameters. Please provide duration, escapeType, and accommodation.' }, { "status": 404 });
 	}
 
 	// The parameters are available here to generate a dynamic itinerary if needed
