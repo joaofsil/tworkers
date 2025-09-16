@@ -17,9 +17,13 @@ const jsonResponse = (data, options = {}) => {
 };
 
 async function call_ai_agent(env, params) {
+	const duration      = params.get('duration');
+	const escapeType    = params.get('escapeType');
+	const accommodation = params.get('accommodation');
+
 	const res = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
 		messages: [
-			{"role": "user", "content": "I want to go on a small vacation and I need your help in planning the trip. Please suggest a travel plan for a duration of " + params.duration + " to visit " + params.escapeType + " and I for accommodations I want suggestions for " + params.accommodation + " in Portugal and for a budget of 2000€"}
+			{"role": "user", "content": "I want to go on a small vacation and I need your help in planning the trip. Please suggest a travel plan for a duration of " + duration + " to visit " + escapeType + " and I for accommodations I want suggestions for " + accommodation + " in Portugal and for a budget of 2000€"}
 		]
 	});
 
