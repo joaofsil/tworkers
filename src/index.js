@@ -22,6 +22,9 @@ const jsonResponse = (data, options = {}) => {
 function handleTravelPlanRequest(request) {
 	const url = new URL(request.url);
 	const { searchParams } = url;
+	let res_headers = new Headers();
+	res_headers.append("Content-Type", "application/json; charset=utf-8");
+	res_headers.append("Access-Control-Allow-Origin", "*");
 
 	// Get the parameters from the query string
 	const duration = searchParams.get('duration');
@@ -30,7 +33,8 @@ function handleTravelPlanRequest(request) {
 
 	// Basic validation to ensure all required parameters are present
 	if (!duration || !escapeType || !accommodation) {
-		return jsonResponse({ error: 'Missing required parameters. Please provide duration, escapeType, and accommodation.' }, { status: 400 });
+		res_headers.append("status", 404);
+		return jsonResponse({ error: 'Missing required parameters. Please provide duration, escapeType, and accommodation.' }, { headers: res_headers });
 	}
 
 	// The parameters are available here to generate a dynamic itinerary if needed
@@ -45,14 +49,13 @@ function handleTravelPlanRequest(request) {
 export default {
 	async fetch(request, env, ctx) {
 		const url = new URL(request.url);
-		const res_headers = new Headers({
-			"Content-Type": "application/json; charset=utf-8",
-			"Access-Control-Allow-Origin": "*"
-		});
+		let res_headers = new Headers();
+		res_headers.append("Content-Type", "application/json; charset=utf-8");
+		res_headers.append("Access-Control-Allow-Origin", "*");
 
 		// Basic routing
 		if (url.pathname === '/api/travel_plan' && request.method === 'GET') {
-			return handleTravelPlanRequest(request, {headers: res_headers});
+			return handleTravelPlanRequest(request);
 		}
 
 		if (url.pathname === '/') {
