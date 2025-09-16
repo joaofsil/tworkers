@@ -8,18 +8,30 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+
+
 // Helper function to create a JSON response.
 const jsonResponse = (data, options = {}) => {
 	const headers = { 'Content-Type': 'application/json', "Access-Control-Allow-Origin": "*", ...options.headers };
 	return new Response(JSON.stringify(data), { ...options, headers });
 };
 
+async function call_ai_agent(env, params) {
+	const res = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+		messages: [
+			{"role": "user", "content": "I want to go on a small vacation and I need your help in planning the trip. Please suggest a travel plan for a duration of " + params.duration + " to visit " + params.escapeType + " and I for accommodations I want suggestions for " + params.accommodation}
+		]
+	});
+
+	return (res);
+}
+
 /**
  * Handles the logic for the /api/travel_plan endpoint.
  * @param {Request} request The incoming request object.
  * @returns {Response} The response to send back.
  */
-function handleTravelPlanRequest(request) {
+async function handleTravelPlanRequest(env, request) {
 	const url = new URL(request.url);
 	const { searchParams } = url;
 
@@ -36,9 +48,12 @@ function handleTravelPlanRequest(request) {
 	// The parameters are available here to generate a dynamic itinerary if needed
 	console.log('Received travel preferences:', { duration, escapeType, accommodation });
 
+	const json_plan = await call_ai_agent(env, searchParams);
+	const plan = json_plan.response;
+
 	// Send the static JSON response
 	return jsonResponse({
-		message: "Here is your suggested itinerary for your upcoming escape. Enjoy your vacation."
+		message: "Here is your suggested itinerary for your upcoming escape. Enjoy your vacation. " + plan
 	});
 }
 
@@ -51,7 +66,7 @@ export default {
 
 		// Basic routing
 		if (url.pathname === '/api/travel_plan' && request.method === 'GET') {
-			return handleTravelPlanRequest(request);
+			return handleTravelPlanRequest(env, request);
 		}
 
 		if (url.pathname === '/') {
