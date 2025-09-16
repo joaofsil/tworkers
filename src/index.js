@@ -48,8 +48,10 @@ async function handleTravelPlanRequest(env, request) {
 	// The parameters are available here to generate a dynamic itinerary if needed
 	console.log('Received travel preferences:', { duration, escapeType, accommodation });
 
-	const json_plan = await call_ai_agent(env, searchParams);
-	const plan = json_plan.response;
+	//const json_plan = await call_ai_agent(env, searchParams);
+	//const plan = json_plan.response;
+	const plan = "Not calling the LLM! Parameters I have received: duration: " + duration +
+	" escapeType: " + escapeType + " accommodation:" + accommodation;
 
 	// Send the static JSON response
 	return jsonResponse({
